@@ -19,5 +19,8 @@ planetYear Saturn  = 29.447498
 planetYear Uranus  = 84.016846
 planetYear Neptune = 164.79132
 
+oneEarthYearSeconds :: Float
+oneEarthYearSeconds = 31557600
+
 ageOn :: Planet -> Float -> Float
-ageOn planet seconds = seconds / (31557600 * planetYear planet)
+ageOn planet seconds = seconds / (oneEarthYearSeconds * planetYear planet)
