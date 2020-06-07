@@ -11,7 +11,7 @@ isQuestion :: Text -> Bool
 isQuestion text = T.last (T.strip text) == '?'
 
 filterAlpha :: Text -> Text
-filterAlpha text = T.filter C.isAlpha text
+filterAlpha = T.filter C.isAlpha
 
 allUpper :: Text -> Bool
 allUpper text
@@ -19,7 +19,7 @@ allUpper text
   | otherwise    = T.all C.isUpper text
 
 allNotAlphaNum :: Text -> Bool
-allNotAlphaNum text = T.all (not.C.isAlphaNum) text
+allNotAlphaNum = T.all (not.C.isAlphaNum)
 
 responseFor :: String -> String
 responseFor xs 
