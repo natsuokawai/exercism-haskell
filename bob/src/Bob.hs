@@ -8,7 +8,9 @@ isEmpty :: Text -> Bool
 isEmpty text = text == T.empty
 
 isQuestion :: Text -> Bool
-isQuestion text = T.last (T.strip text) == '?'
+isQuestion text
+  | isEmpty text = False
+  | otherwise    = T.last (T.strip text) == '?'
 
 filterAlpha :: Text -> Text
 filterAlpha = T.filter C.isAlpha
@@ -23,10 +25,9 @@ allNotAlphaNum = T.all (not.C.isAlphaNum)
 
 responseFor :: String -> String
 responseFor xs 
-  | isEmpty text                   = "Fine. Be that way!"
-  | isQuestion text
-    && allUpper (filterAlpha text) = "Calm down, I know what I'm doing!"
-  | isQuestion text                = "Sure."
+  | isQuestion text                = if allUpper (filterAlpha text)
+                                       then "Calm down, I know what I'm doing!"
+                                       else "Sure."
   | allNotAlphaNum text            = "Fine. Be that way!"
   | allUpper (filterAlpha text)    = "Whoa, chill out!"
   | otherwise                      = "Whatever."
