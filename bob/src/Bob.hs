@@ -11,10 +11,7 @@ isQuestion :: Text -> Bool
 isQuestion text = T.last (T.strip text) == '?'
 
 isYelling :: Text -> Bool
-isYelling text = allUpper (filterAlpha text)
-
-filterAlpha :: Text -> Text
-filterAlpha = T.filter C.isAlpha
+isYelling text = allUpper (T.filter C.isAlpha text)
 
 allUpper :: Text -> Bool
 allUpper text
