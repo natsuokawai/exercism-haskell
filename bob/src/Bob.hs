@@ -1,37 +1,24 @@
 module Bob (responseFor) where
 
+{-# LANGUAGE OverloadedStrings #-}
 import qualified Data.Char as C
 import qualified Data.Text as T
 import Data.Text (Text)
 
-isEmpty :: Text -> Bool
-isEmpty text = text == T.empty
+isAllUpper :: Text -> Bool
+isAllUpper text
+  | text == T.empty = False
+  | otherwise       = T.all C.isUpper text
 
-isQuestion :: Text -> Bool
-isQuestion text = T.last (T.strip text) == '?'
-
-isYelling :: Text -> Bool
-isYelling text = allUpper (T.filter C.isAlpha text)
-
-allUpper :: Text -> Bool
-allUpper text
-  | isEmpty text = False
-  | otherwise    = T.all C.isUpper text
-
-isAllUpperQuestion :: Text -> Bool
-isAllUpperQuestion text = isQuestion text && isYelling text
-
-isSayingNothing :: Text -> Bool
-isSayingNothing text
-  | isEmpty text = True
-  | otherwise    = (not.isQuestion) text && T.all (not.C.isAlphaNum) text
-
-responseFor :: String -> String
-responseFor xs 
-  | isSayingNothing text    = "Fine. Be that way!"
-  | isAllUpperQuestion text = "Calm down, I know what I'm doing!"
-  | isQuestion text         = "Sure."
-  | isYelling text          = "Whoa, chill out!"
+responseFor :: Text -> String
+responseFor text 
+  | isQuestion && isYelling = "Calm down, I know what I'm doing!"
+  | isQuestion              = "Sure."
+  | isYelling               = "Whoa, chill out!"
+  | isSayingNothing         = "Fine. Be that way!"
   | otherwise               = "Whatever."
-  where text = T.strip $ T.pack xs
+  where
+    isSayingNothing = T.all (not.C.isAlphaNum) text
+    isQuestion      = T.isSuffixOf (T.pack "?") (T.strip text)
+    isYelling       = isAllUpper (T.filter C.isAlpha text)
 
