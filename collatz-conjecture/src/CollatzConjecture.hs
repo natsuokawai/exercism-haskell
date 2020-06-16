@@ -1,15 +1,13 @@
 module CollatzConjecture (collatz) where
 
-type Count = Integer
-
-collatz :: Integer -> Maybe Count
+collatz :: Integer -> Maybe Integer
 collatz num
-  | num < 1 = Nothing
-  | otherwise = Just $ fromIntegral $ length $ collatzList [num]
+  | num <= 0  = Nothing
+  | otherwise = Just $ fromIntegral $ length $ collatzList num
 
-collatzList :: [Integer] -> [Integer]
-collatzList (x:xs)
-  | x == 1 = []
-  | odd x  = (3 * x + 1):(collatzList xs)
-  | even x = (x `div` 2):(collatzList xs)
-
+collatzList :: Integer -> [Integer]
+collatzList x
+  | x == 1 = []
+  | odd x  = x:collatzList (3 * x + 1)
+  | even x = x:collatzList (x `div` 2)
+collatzList _ = error "Invalid argument."
